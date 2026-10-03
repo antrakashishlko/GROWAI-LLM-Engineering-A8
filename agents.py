@@ -1,3 +1,10 @@
+"""
+Multi-Agent Research Assistant & MCP Server
+This project demonstrates a Supervisor Agent coordinating Research
+and Analysis Agents, along with a FastMCP server and client.
+The agents use a local knowledge base for research and structured comparison.
+"""
+
 # ============================================================
 # 1. IMPORTS AND MODEL SETUP
 # ============================================================
@@ -176,7 +183,11 @@ def analysis_agent_tool(question: str) -> str:
 
     response = analysis_agent.invoke({
         "messages": [
-            ("user", question)
+            (
+                "user",
+                "Use the compare_information tool to analyse this question: "
+                + question
+            )
         ]
     })
 
@@ -205,11 +216,13 @@ supervisor = create_agent(
 
         "Routing rules:\n"
         "1. For factual questions, use the Research Agent.\n"
-        "2. For comparison or analysis questions, use the Analysis Agent.\n"
+        "2. For comparison or analysis questions, ALWAYS use the Analysis Agent.\n"
         "3. If a question requires researching two topics and then comparing "
-        "them, first use the Research Agent to obtain the information and "
-        "then use the Analysis Agent to compare the information.\n"
-        "4. Combine the specialist results into one clear final answer."
+        "them, first call the Research Agent separately for each topic. "
+        "Collect both research results. Then call the Analysis Agent and give "
+        "it both research results for comparison.\n"
+        "4. After receiving results from the specialist agents, combine them "
+        "into one clear final answer. Never return an empty answer."
     )
 )
 
