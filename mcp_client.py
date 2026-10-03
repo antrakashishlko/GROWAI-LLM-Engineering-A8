@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 from fastmcp import Client
 
 # ============================================================
@@ -9,7 +10,7 @@ async def main():
     """Connect to the MCP server and call its available tools."""
 
     # Connect to the local MCP server
-    client = Client("mcp_server.py")
+    client = Client(Path("mcp_server.py"))
 
     async with client:
         print("Connected to MCP server!")
